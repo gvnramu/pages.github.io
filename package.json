@@ -1,0 +1,24 @@
+{
+  "name": "html-email",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Steve Milburn <scmilburn@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "apexcharts": "^3.10.0",
+    "chart.js": "^2.9.1",
+    "cron": "^1.7.2",
+    "dotenv-safe": "^6.0.0",
+    "email-templates": "^5.0.0",
+    "ng2-charts": "^2.3.0",
+    "nodemailer": "^4.6.8",
+    "nodemailer-mailgun-transport": "^1.4.0",
+    "phantomjs": "^2.1.7",
+    "webpage": "^0.3.0",
+    "webshot": "^0.18.0"
+  }
+}

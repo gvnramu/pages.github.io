@@ -1,0 +1,371 @@
+<html>
+
+<head>
+    <title>Chart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+</head>
+
+<body>
+    <br>
+    <h4 class="center">Top 5 performers</h4>
+    <div class="row">
+        <h4>Sector: Govt </h4>
+        <div class="col m6">
+            <div class="z-depth-1">
+                <h6>Type: Aua, Count: Total</h6>
+                <div id="chart1">
+                </div>
+            </div>
+        </div>
+        <div class="col m6">
+            <div class="z-depth-1">
+                <h6>Type: Aua, Count: Yesterday</h6>
+                <div id="chart2">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col m6">
+            <div class="z-depth-1">
+                <h6>Type: Kua, Count: Total</h6>
+                <div id="chart3">
+                </div>
+            </div>
+        </div>
+        <div class="col m6">
+            <div class="z-depth-1">
+                <h6>Type: Kua, Count: Yesterday</h6>
+                <div id="chart4">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ************public sector************ -->
+   
+    <div class="row">
+            <h4>Sector: Public </h4>
+            <div class="col m6">
+                <div class="z-depth-1">
+                    <h6>Type: Aua, Count: Total</h6>
+                    <div id="chart5">
+                    </div>
+                </div>
+            </div>
+            <div class="col m6">
+                <div class="z-depth-1">
+                    <h6>Type: Aua, Count: Yesterday</h6>
+                    <div id="chart6">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col m6">
+                <div class="z-depth-1">
+                    <h6>Type: Kua, Count: Total</h6>
+                    <div id="chart7">
+                    </div>
+                </div>
+            </div>
+            <div class="col m6">
+                <div class="z-depth-1">
+                    <h6>Type: Kua, Count: Yesterday</h6>
+                    <div id="chart8">
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- ************private sector************ -->
+    <div class="row">
+            <h4>Sector: Private </h4>
+            <div class="col m6">
+                <div class="z-depth-1">
+                    <h6>Type: Aua, Count: Total</h6>
+                    <div id="chart9">
+                    </div>
+                </div>
+            </div>
+            <div class="col m6">
+                <div class="z-depth-1">
+                    <h6>Type: Aua, Count: Yesterday</h6>
+                    <div id="chart10">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col m6">
+                <div class="z-depth-1">
+                    <h6>Type: Kua, Count: Total</h6>
+                    <div id="chart11">
+                    </div>
+                </div>
+            </div>
+            <div class="col m6">
+                <div class="z-depth-1">
+                    <h6>Type: Kua, Count: Yesterday</h6>
+                    <div id="chart12">
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+
+<script>
+    var chartno = 1;
+    function send_request(body){
+        var request = new XMLHttpRequest()
+        var fp = [];
+        var total = [];
+        var dm = [];
+        var otp = [];
+        var iris = [];
+        var c_name = []; 
+        var day_ekyc = [];
+        var total_ekyc = [];
+        var day_fp = [];
+        var day_dm = [];
+        var day_otp = [];
+        var day_iris = [];
+
+        request.open('POST', 'http://199.192.21.119/transactions', false)   
+        request.onload = function() {
+        // Begin accessing JSON data here
+        // console.log(this.responseText)
+        var data = JSON.parse(this.response)
+        
+        if (request.status == 200) {
+            data.forEach(record => {
+                c_name.push(record.name)
+                if(body.count == "total") 
+                    total.push(record.transactions[0].total_auth)
+                else 
+                    total.push(record.transactions[0].day_auth)
+                day_fp.push(record.transactions[0].day_fingerprint)
+                day_dm.push(record.transactions[0].day_demographic)
+                day_otp.push(record.transactions[0].day_otp)
+                day_iris.push(record.transactions[0].day_iris)
+
+                fp.push(record.transactions[0].total_fingerprint)
+                dm.push(record.transactions[0].total_demographic)
+                otp.push(record.transactions[0].total_otp)
+                iris.push(record.transactions[0].total_iris)
+                day_ekyc.push(record.transactions[0].day_ekyc)
+                total_ekyc.push(record.transactions[0].total_ekyc)
+            })
+            console.log(c_name);
+            console.log("total : ", total);
+            console.log("day_ekyc : ",day_ekyc)
+            console.log("total_ekyc : ", total_ekyc)
+            console.log("fp : ",fp);
+            console.log("dm : ",dm);
+            console.log("otp : ",otp);
+            console.log("iris : ",iris);
+            
+        } else {
+            console.log('error')
+        }
+        }
+        
+        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        request.send(JSON.stringify(body))
+
+        if(body.a_type=='aua') {
+            if(body.count == 'yesterday') {
+                total = day_ekyc;
+                fp = day_fp;
+                dm = day_dm;
+                otp = day_otp;
+                iris = day_iris;
+
+                console.log("yesterday");
+            }
+            setAuaChartOptions(c_name,total,fp,dm,otp,iris);
+        }
+        else {
+            if(body.count == 'yesterday'){
+                console.log("yesterday");
+                total_ekyc = day_ekyc;
+            }
+            setKuaChartOptions(c_name,total_ekyc);
+        }
+    }
+    var auaChartOptions;
+    function setAuaChartOptions(c_name,total,fp,dm,otp,iris){
+        var auaChartOptions = {
+        chart: {
+            height: 400,
+            width: '100%',
+            type: 'bar',
+            stacked: true
+        },
+        dataLabels: {
+            enabled: false
+        },
+ 
+        series: [{
+            width: 100,
+            name: 'FP',
+            data: fp
+        },{
+            name: 'DM',
+            data: dm
+        },{
+            name: 'IRIS',
+            data: iris
+        },{
+            name: 'OTP',
+            data: otp
+        }
+        ],
+        stroke: {
+            width: [1, 1, 4]
+        },
+        title: {
+            text: '',
+            align: 'left',
+            offsetX: 110
+        },
+        xaxis: {
+            categories: c_name,
+        },
+        yaxis: [
+            {
+                axisTicks: {
+                    show: true,
+                },
+                axisBorder: {
+                    show: true,
+                    color: '#008FFB'
+                },
+                labels: {
+                    style: {
+                        color: '#008FFB',
+                    }
+                },
+                title: {
+                    text: "Transactions",
+                    style: {
+                        color: '#008FFB',
+                    }
+                },
+                tooltip: {
+                    enabled: true
+                }
+            }
+        ],
+
+        legend: {
+            horizontalAlign: 'left',
+            offsetX: 40
+        }
+        }
+
+        var chart1 = new ApexCharts(
+            document.querySelector("#chart"+chartno),
+            auaChartOptions
+        );
+        chart1.render();
+        console.log("#chart"+chartno);
+        chartno++;
+    }
+    function setKuaChartOptions(c_name,total) {
+        var options = {
+            chart: {
+                height: 350,
+                width: '100%',
+                type: 'bar',
+                stacked: false
+            },
+            dataLabels: {
+                enabled: false
+            },
+            series: [{
+                width: 100,
+                name: 'sales',
+                data: total
+            }
+            ],
+            stroke: {
+                width: [1, 1, 4]
+            },
+            title: {
+                text: '',
+                align: 'left',
+                offsetX: 110
+            },
+            xaxis: {
+                categories: c_name,
+            },
+            yaxis: [
+                {
+                    axisTicks: {
+                        show: true,
+                    },
+                    axisBorder: {
+                        show: true,
+                        color: '#008FFB'
+                    },
+                    labels: {
+                        style: {
+                            color: '#008FFB',
+                        }
+                    },
+                    title: {
+                        text: "Transactions",
+                        style: {
+                            color: '#008FFB',
+                        }
+                    },
+                    tooltip: {
+                        enabled: true
+                    }
+                }
+            ],
+            legend: {
+                horizontalAlign: 'left',
+                offsetX: 40
+            }
+        }
+        var chart1 = new ApexCharts(
+            document.querySelector("#chart"+chartno),
+            options
+        );
+        chart1.render();
+        console.log("#chart"+chartno);
+        chartno++;
+    }
+
+    var sector = ["Govt","Public","Private"];
+    var type = ["aua","kua"];
+    var count = ["total","yesterday"];
+
+    for(var sec=0;sec<sector.length;sec++) {
+        for(var t = 0;t<type.length;t++) {
+            for(var c = 0;c < count.length;c++) {
+                var body = {
+                    a_sector:sector[sec],
+                    a_type:type[t],
+                    count:count[c]
+                }
+                console.log(body);
+                send_request(body);
+            }
+        }
+    }
+  
+
+  
+
+
+</script>
+
+</html>
