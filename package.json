@@ -15,7 +15,7 @@
     "dotenv-safe": "^6.0.0",
     "email-templates": "^5.0.0",
     "ng2-charts": "^2.3.0",
-    "nodemailer": "^4.6.8",
+    "nodemailer": "^6.4.16",
     "nodemailer-mailgun-transport": "^1.4.0",
     "phantomjs": "^2.1.7",
     "webpage": "^0.3.0",
