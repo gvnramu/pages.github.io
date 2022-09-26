@@ -16,7 +16,7 @@
     "email-templates": "^5.0.0",
     "ng2-charts": "^2.3.0",
     "nodemailer": "^4.6.8",
-    "nodemailer-mailgun-transport": "^1.4.0",
+    "nodemailer-mailgun-transport": "^2.1.5",
     "phantomjs": "^2.1.7",
     "webpage": "^0.3.0",
     "webshot": "^0.18.0"
